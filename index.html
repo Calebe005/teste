@@ -1,11 +1,107 @@
+
+/*
+O que esse código ensina:
+- Como capturar valores de campos <input> com JavaScript.
+- Como criar e manipular arrays (push, pop, shift, unshift).
+- Como buscar itens com indexOf e includes.
+- Como ordenar e inverter arrays (sort, reverse).
+- Como percorrer arrays com for, for...of e forEach.
+- Como transformar arrays com map, filter e reduce.
+- Como manipular o DOM para exibir resultados dinamicamente (HTML).
+- Como usar template literals (`${}`) para formatar strings.
+*/
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>teste de mudanda</title>
+<html lang="pt-BR">
+<head><meta charset="utf-8"><title>Aula 14 - Arrays</title>
+<style>body{font-family:Arial;padding:18px} section{border:1px solid #ddd;padding:12px;margin:8px 0;border-radius:6px} input{margin:4px} ul{padding-left:18px}</style>
 </head>
 <body>
-    <p>opas</p>
+<h1>Aula 14 – Manipulação de Arrays em JavaScript</h1>
+
+<section>
+  <h3>Mini-projeto: Lista de Compras</h3>
+  <label>Item: <input id="itemInput" placeholder="Ex: leite"></label>
+  <button id="btnAdd">Adicionar</button>
+  <button id="btnPop">Remover último</button>
+  <button id="btnSort">Ordenar</button>
+  <button id="btnClear">Limpar</button>
+  <p id="msg"></p>
+  <h4>Lista:</h4>
+  <ul id="lista"></ul>
+</section>
+
+<section>
+  <h3>Exemplos rápidos</h3>
+  <button id="exCriar">Criar array exemplo</button>
+  <pre id="outEx"></pre>
+</section>
+
+<script>
+/* Cabeçalho: o que esse código ensina (repetido para estudantes que abrirem só o HTML)
+- Como capturar valores de campos <input> com JavaScript.
+- Como criar e manipular arrays (push, pop, shift, unshift).
+- Como buscar itens com indexOf e includes.
+- Como ordenar e inverter arrays (sort, reverse).
+- Como percorrer arrays com for, for...of e forEach.
+- Como transformar arrays com map, filter e reduce.
+- Como manipular o DOM para exibir resultados dinamicamente (HTML).
+- Como usar template literals (`${}`) para formatar strings.
+*/
+
+let listaCompras = [];
+
+function atualizarLista(){
+  const ul = document.getElementById('lista');
+  ul.innerHTML = '';
+  if(listaCompras.length===0){ ul.innerHTML = '<li>(vazia)</li>'; return; }
+  listaCompras.forEach((it, i)=>{ const li = document.createElement('li'); li.textContent = `${i+1}. ${it}`; ul.appendChild(li); });
+}
+
+document.getElementById('btnAdd').addEventListener('click', ()=>{
+  const v = document.getElementById('itemInput').value.trim();
+  if(!v){ document.getElementById('msg').textContent='Digite um item.'; return; }
+  listaCompras.push(v);
+  document.getElementById('msg').textContent = `"${v}" adicionado.`;
+  document.getElementById('itemInput').value='';
+  atualizarLista();
+});
+
+document.getElementById('btnPop').addEventListener('click', ()=>{
+  const r = listaCompras.pop();
+  document.getElementById('msg').textContent = r ? `"${r}" removido.` : 'Lista vazia.';
+  atualizarLista();
+});
+
+document.getElementById('btnSort').addEventListener('click', ()=>{
+  listaCompras.sort();
+  document.getElementById('msg').textContent = 'Lista ordenada.';
+  atualizarLista();
+});
+
+document.getElementById('btnClear').addEventListener('click', ()=>{
+  listaCompras = [];
+  document.getElementById('msg').textContent = 'Lista limpa.';
+  atualizarLista();
+});
+
+document.getElementById('exCriar').addEventListener('click', ()=>{
+  const exemplo = ['maçã','banana','laranja'];
+  let out = 'Array inicial: ' + JSON.stringify(exemplo) + '\n';
+  exemplo.push('uva'); out += 'Depois push: ' + JSON.stringify(exemplo) + '\n';
+  exemplo.pop(); out += 'Depois pop: ' + JSON.stringify(exemplo) + '\n';
+  out += 'indexOf("banana"): ' + exemplo.indexOf('banana') + '\n';
+  out += 'includes("pera"): ' + exemplo.includes('pera') + '\n';
+  out += 'sort(): ' + JSON.stringify(exemplo.slice().sort()) + '\n';
+  out += 'reverse(): ' + JSON.stringify(exemplo.slice().reverse()) + '\n';
+  out += 'forEach: '; exemplo.forEach((it,i)=> out += '\n  ' + i + ': ' + it);
+  out += '\nmap(dobro): ' + JSON.stringify([1,2,3].map(n=>n*2));
+  out += '\nfilter(pares): ' + JSON.stringify([1,2,3,4].filter(n=>n%2===0));
+  out += '\nreduce(soma): ' + [1,2,3].reduce((a,b)=>a+b,0);
+  document.getElementById('outEx').textContent = out;
+});
+
+atualizarLista();
+</script>
 </body>
 </html>
